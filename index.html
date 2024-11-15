@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+	<link rel="stylesheet" href="arthur.css">
+	<TITLE>Arthur Morgan chatbot</TITLE>
+	<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="elizabot.js"></SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="elizadata.js"></SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!--
+
+var eliza = new ElizaBot();
+var elizaLines = new Array();
+
+var displayCols = 60;
+var displayRows = 20;
+
+function elizaReset() {
+	eliza.reset();
+	elizaLines.length = 0;
+	elizaStep();
+}
+
+function elizaStep() {
+	var f = document.forms.e_form;
+	var userinput = f.e_input.value;
+	if (eliza.quit) {
+		f.e_input.value = '';
+		if (confirm("This session is over.\nStart over?")) elizaReset();
+		f.e_input.focus();
+		return;
+	}
+	else if (userinput != '') {
+		var usr = 'YOU:   ' + userinput;
+		var rpl ='Arthur Morgan: ' + eliza.transform(userinput);
+		elizaLines.push(usr);
+		elizaLines.push(rpl);
+		// display nicely
+		// (fit to textarea with last line free - reserved for extra line caused by word wrap)
+		var temp  = new Array();
+		var l = 0;
+		for (var i=elizaLines.length-1; i>=0; i--) {
+			l += 1 + Math.floor(elizaLines[i].length/displayCols);
+			if (l >= displayRows) break
+			else temp.push(elizaLines[i]);
+		}
+		elizaLines = temp.reverse();
+		f.e_display.value = elizaLines.join('\n');
+	}
+	else if (elizaLines.length == 0) {
+		// no input and no saved lines -> output initial
+		var initial = 'Arthur Morgan: ' + eliza.getInitial();
+		elizaLines.push(initial);
+		f.e_display.value = initial + '\n';
+	}
+	f.e_input.value = '';
+	f.e_input.focus();
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+
+	<BODY style="background-color: maroon;" onload="window.setTimeout('elizaReset()',100)"><A NAME="top"></A>
+
+		
+			
+				
+			<CENTER>
+				
+					<img src="ArthurMorgan.png">
+
+					
+					<H3 style="font-size: 200%; background-color: red; width: 300px;">Arthur Morgan</H3>
+					
+					<TABLE BORDER="0" CELLSPACING="10" CELLPADDING="0">
+					<FORM NAME="e_form" onsubmit="elizaStep();return false">
+					<TR><TD COLSPAN="2"><TEXTAREA NAME="e_display" COLS="60" ROWS="20"></TEXTAREA></TD></TR>
+					<TR VALIGN="middle">
+						<TD><INPUT TYPE="text" NAME="e_input" SIZE="50"></TD>
+						<TD ALIGN="right"><INPUT TYPE="submit" VALUE="&nbsp;Talk&nbsp;"> <INPUT TYPE="reset" VALUE="Reset" onClick="window.setTimeout('elizaReset()',100)"></TD>
+					</TR>
+					</FORM>
+					</TABLE>
+				
+			</CENTER>
+			
+	
+	<P ALIGN="center"> Arthur Morgan is the main character of "Red Dead Redemption II" he is an outlaw that runs 
+		with the Vanderlinde gang, as a civilian most people don't know his name, This chatbot is representing his
+		personality in chapter 2 where you are in valintine (first town since his gang ran from the last)
+	</P>
+
+	<TABLE BORDER="0" CELLSPACING="12" CELLPADDDING="0">
+
+	</TABLE>
+
+	</BODY>
+
+</HTML>
